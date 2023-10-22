@@ -152,6 +152,12 @@ class UiRequestPlugin(object):
         for site_address, onion in list(main.file_server.tor_manager.site_onions.items()):
             yield "- %-34s: %s<br>" % (site_address, onion)
 
+    def renderI2P(self):
+        import main
+        yield "<br><br><b>I2P Destinations (status: %s):</b><br>" % main.file_server.i2p_manager.status
+        for site_address, dest in list(main.file_server.i2p_manager.site_dests.items()):
+            yield "- %-34s: %s<br>" % (site_address, dest.base32())
+
     def renderDbStats(self):
         yield "<br><br><b>Db</b>:<br>"
         for db in Db.opened_dbs:
@@ -406,6 +412,7 @@ class UiRequestPlugin(object):
             self.renderConnectionsTable(),
             self.renderTrackers(),
             self.renderTor(),
+            self.renderI2P(),
             self.renderDbStats(),
             self.renderSites(),
             self.renderBigfiles(),
@@ -647,3 +654,4 @@ class ActionsPlugin:
             ["- msgpack unpacker:", msgpack.Unpacker.__module__],
             format=format
         )
+

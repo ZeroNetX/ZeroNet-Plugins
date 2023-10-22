@@ -91,6 +91,7 @@ class UiWebsocketPlugin(object):
         connected = len([peer for peer in list(site.peers.values()) if peer.connection and peer.connection.connected])
         connectable = len([peer_id for peer_id in list(site.peers.keys()) if not peer_id.endswith(":0")])
         onion = len([peer_id for peer_id in list(site.peers.keys()) if ".onion" in peer_id])
+        i2p = len([peer_id for peer_id in list(site.peers.keys()) if ".i2p" in peer_id])
         local = len([peer for peer in list(site.peers.values()) if helper.isPrivateIp(peer.ip)])
         peers_total = len(site.peers)
 
@@ -106,8 +107,9 @@ class UiWebsocketPlugin(object):
             percent_connected = float(connected) / peers_total
             percent_connectable = float(connectable) / peers_total
             percent_onion = float(onion) / peers_total
+            percent_i2p = float(i2p) / peers_total
         else:
-            percent_connectable = percent_connected = percent_onion = 0
+            percent_connectable = percent_connected = percent_onion = percent_i2p = 0
 
         if local:
             local_html = _("<li class='color-yellow'><span>{_[Local]}:</span><b>{local}</b></li>")
@@ -131,12 +133,14 @@ class UiWebsocketPlugin(object):
               <li style='width: 100%' class='total back-black' title="{_[Total peers]}"></li>
               <li style='width: {percent_connectable:.0%}' class='connectable back-blue' title='{_[Connectable peers]}'></li>
               <li style='width: {percent_onion:.0%}' class='connected back-purple' title='{_[Onion]}'></li>
+              <li style='width: {percent_i2p:.0%}' class='connected back-purple' title='{_[I2P]}'></li>
               <li style='width: {percent_connected:.0%}' class='connected back-green' title='{_[Connected peers]}'></li>
              </ul>
              <ul class='graph-legend'>
               <li class='color-green'><span>{_[Connected]}:</span><b>{connected}</b></li>
               <li class='color-blue'><span>{_[Connectable]}:</span><b>{connectable}</b></li>
               <li class='color-purple'><span>{_[Onion]}:</span><b>{onion}</b></li>
+              <li class='color-purple'><span>{_[I2P]}:</span><b>{i2p}</b></li>
               {local_html}
               <li class='color-black'><span>{_[Total]}:</span><b>{peers_total}</b></li>
              </ul>

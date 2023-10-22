@@ -82,7 +82,10 @@ class SiteAnnouncerPlugin(object):
 
         req = urllib.request.Request(url, headers=headers)
 
-        if config.trackers_proxy == "tor":
+        if ".i2p" in url:
+            i2p_manager = self.site.connection_server.i2p_manager
+            return i2p_manager.urlopen(self.site.address, req, timeout=50)
+        elif config.trackers_proxy == "tor":
             tor_manager = self.site.connection_server.tor_manager
             handler = sockshandler.SocksiPyHandler(socks.SOCKS5, tor_manager.proxy_ip, tor_manager.proxy_port)
             opener = urllib.request.build_opener(handler)
